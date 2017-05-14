@@ -1,7 +1,7 @@
 import { action, computed, observable, autorun } from "mobx"
 import api from "../api/index"
 
-import _ from "lodash"
+import debounce from "lodash/debounce"
 
 class Parcel {
     @observable item = "this is a test"
@@ -14,7 +14,7 @@ class Parcel {
 export class ParcelStore {
 
     constructor(){
-        this.detectTracking = _.debounce(this.detectTracking, 500)
+        this.detectTracking = debounce(this.detectTracking, 500)
     }
 
     // Data handlers
@@ -35,14 +35,13 @@ export class ParcelStore {
     }
 
     @action validator(input) {
-        this.trackingInput = input.replace(/[^0-9a-z]/gi, '').toUpperCase()
-        if (this.trackingInput.length > 10) {
-            this.detectTracking()
+        this.trackingInput = input.replace(/[^0-9a-z-]/gi, '').toUpperCase()
+        if (this.trackingInput.length >= 8 && this.trackingInput.length <= 18) {
             this.errMessage = ""
         } else if (this.trackingInput.length === 0) {
             this.errMessage = ""
         } else {
-            this.errMessage = "Tracking number must be more than 10"
+            this.errMessage = "Tracking number invalid [8-18]"
         }
     }
 }

@@ -10,6 +10,24 @@ export default class DataList extends React.Component {
         //this.logger(e.target.value)
     }
 
+    actionHandler(e) {
+        const {
+            trackingInput,
+            errMessage,
+        } = this.props.store
+
+        if(e.key === 'Enter' &&
+            trackingInput.length !== 0 &&
+            errMessage.length ===0) {
+
+            this.apiCaller()
+        }
+    }
+
+    apiCaller() {
+        console.log("Api Called!")
+    }
+
     render() {
 
         const {
@@ -36,11 +54,12 @@ export default class DataList extends React.Component {
                     </div>
                 </section>
                 <div style={{padding: 20}}>
-                    <div className="container">
+                    <div style={{maxWidth:600}} className="container">
                         <div className="field has-addons has-addons-centered">
-                            <div style={{maxWidth:600}} className="control has-icons-left has-icons-right is-expanded">
+                            <div className="control has-icons-left has-icons-right is-expanded">
                                 <input className={"input " + (errMessage.length > 0 ? 'is-danger' : '')}
                                        onChange={this.validate.bind(this)} value={trackingInput}
+                                       onKeyPress={this.actionHandler.bind(this)}
                                        placeholder="Tracking number..."/>
                                 <span className="icon is-left">
                                     <i className="fa fa-search"></i>
@@ -54,12 +73,19 @@ export default class DataList extends React.Component {
                                     </div>
                                 }
                             </div>
+                            <div className="control">
+                                <button className="button is-info"
+                                   disabled={errMessage.length > 0 || trackingInput.length === 0}
+                                   onclick={this.apiCaller}
+                                >
+                                    Search
+                                </button>
+                            </div>
                         </div>
-                        <ul></ul>
                     </div>
-                    <div className="container">
+                    <div style={{maxWidth: 600, marginTop: 30}} className="container">
                         <div className="field has-addons has-addons-centered">
-                            <div style={{maxWidth: 600}} className="control is-expanded">
+                            <div className="control is-expanded">
                                 <div className="box">
                                     <div>
                                         <span>Param</span>
