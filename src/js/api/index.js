@@ -37,7 +37,7 @@ class Fetcher {
             console.log("ERROR!", err.response)
             console.log("Code:", err.response.status)
             console.log("Msg:", err.response.data.meta.message)
-        } 
+        }
     }
 }
 
